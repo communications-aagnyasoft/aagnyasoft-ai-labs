@@ -12,7 +12,7 @@ export default function Footer({ companyName, quickLinks }: FooterProps) {
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start px-4">
         <div className="w-full md:w-1/3 mb-6 md:mb-0 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start mb-4">
-            <Image src="/logo.png" alt="AagnyaSoft AI Labs Logo" width={60} height={50} className="mr-2" />
+            <Image src="/public/logo.png" alt="AagnyaSoft AI Labs Logo" width={60} height={50} className="mr-2" />
             <h3 className="text-xl font-bold text-white">{companyName}</h3>
           </div>
           <p className="text-base md:text-lg mt-4 max-w-sm mx-auto text-center">
