@@ -15,7 +15,7 @@ export default function MarketingAIAgent({ title, description }: MarketingAIAgen
         </div>
         <div className="w-full md:w-1/2 md:pl-10">
           <Image
-            src="/public/marketing.webp"
+            src="marketing.webp"
             alt="Marketing AI Agent"
             width={600}
             height={400}

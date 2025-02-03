@@ -14,7 +14,7 @@ export default function DevOpsAIAgent({ title, description }: DevOpsAIAgentProps
         </div>
         <div className="w-full md:w-1/2 md:pr-10">
           <Image
-            src="/public/Devops.webp"
+            src="Devops.webp"
             alt="DevOps AI Agent"
             width={600}
             height={400}
