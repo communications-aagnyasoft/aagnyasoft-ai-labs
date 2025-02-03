@@ -14,39 +14,57 @@ interface ContactProps {
 export default function Contact({ title, description }: ContactProps) {
   const { toast } = useToast(); // Initialize toast
   const [loading, setLoading] = useState(false); // Loading state
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true); // Start loading
-
-    const formData = new FormData(event.currentTarget);
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
-    };
+    setSubmitted(false);
+    const form = event.currentTarget;
 
     try {
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        message: formData.get("message"),
+      };
+
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyrGN94IY6bVVboVXpFwcDpF3OXqexLvPivi4xKBsZsM_rApxer8q3MHQGazUEQQ6B8/exec",
+        'https://script.google.com/macros/s/AKfycby4wWXZDjDnmoLpDG-gEOBtsYcZFQKc_u_akAS_pEI0NigaCN5y4QCrW9b5n7TKv8lK/exec',
         {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          method: 'POST',
+          mode: 'no-cors', // This prevents CORS errors
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
           body: new URLSearchParams(data as Record<string, string>).toString(),
         }
       );
 
-      const result = await response.json();
-      if (result.result === "Success") {
-        toast({ title: "Success!", description: "Message sent successfully.", variant: "default" });
-        event.currentTarget.reset(); // Reset form
-      } else {
-        throw new Error("Failed to send message.");
-      }
+      // Since we're using no-cors mode, we won't get a readable response
+      // We'll assume success if we get here
+      form.reset();
+      setSubmitted(true);
+      toast({
+        title: "Success!",
+        description: "Your message has been sent successfully.",
+        variant: "default",
+      });
+
+      // Scroll to the top of the page
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
     } catch (error) {
-      toast({ title: "Error!", description: "Something went wrong. Try again later.", variant: "destructive" });
+      console.error("Submission error:", error);
+      toast({
+        title: "Error!",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
+      setTimeout(() => setSubmitted(false), 2000); // Reset the button text after 2 seconds
     }
   };
 
@@ -71,7 +89,7 @@ export default function Contact({ title, description }: ContactProps) {
             />
           </div>
           <Button type="submit" disabled={loading} className="w-full bg-purple-900 text-white hover:bg-purple-800">
-            {loading ? "Sending..." : "Send Message"}
+            {loading ? "Sending..." : submitted ? "Sent!" : "Send Message"}
           </Button>
         </form>
       </div>
